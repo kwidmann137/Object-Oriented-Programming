@@ -41,10 +41,8 @@ public class Planet {
 
     public void setDiameter(String diameter){
         if(validator.validateDiameter(diameter)){
-            System.out.println("setDiameter");
             try {
                 this.diameter = NumberFormat.getNumberInstance(Locale.US).parse(diameter).intValue();
-                System.out.println("New diameter set");
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -92,6 +90,10 @@ public class Planet {
         return image;
     }
 
+    public PlanetValidator getValidator(){
+        return this.validator;
+    }
+
     public void addErrorListener(MapChangeListener<PlanetAttribute, String> listener){
         this.validator.addErrorListener(listener);
     }
@@ -102,5 +104,9 @@ public class Planet {
         }
 
         PlanetFileGateway.savePlanetToFile(this, file);
+    }
+
+    public void addErrorListener(PlanetAttribute imageFile, Object o) {
+
     }
 }

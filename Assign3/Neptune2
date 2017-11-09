@@ -1,0 +1,6 @@
+#Wed Nov 08 15:36:53 CST 2017
+IMAGE_FILE=/home/kyle/Java-Projects/Object-Oriented-Programming/Assign3/src/images/neptune.png
+MOONS=12
+DIAMETER=10000
+TEMPERATURE=-21.5
+NAME=Neptune

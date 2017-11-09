@@ -5,30 +5,22 @@ import javafx.application.Platform;
 import javafx.collections.MapChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
+import javafx.geometry.Insets;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import javafx.scene.image.Image;
-import models.Planet;
-import models.PlanetAttribute;
-import models.PlanetFileGateway;
-import models.PlanetValidator;
+import models.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Locale;
 
 public class PlanetController {
 
@@ -84,6 +76,14 @@ public class PlanetController {
 
     public void initializeComponents(){
 
+        initializeTextListeners();
+
+        initializeErrorListeners();
+
+        planetImage.setImage(new Image("images/no_image.png"));
+    }
+
+    private void initializeTextListeners(){
         planetName.textProperty().addListener((obj, oldText, newText) -> {
             handleNameChange(newText, oldText);
         });
@@ -104,69 +104,44 @@ public class PlanetController {
         planetNumberOfMoons.textProperty().addListener((obj, oldText, newText) -> {
             handleMoonsChange(newText, oldText);
         });
+    }
 
-        planetImage.setImage(new Image("images/no_image.png"));
+    private void initializeErrorListeners(){
+
+        HookErrorToText(PlanetAttribute.NAME, nameError);
+
+        HookErrorToText(PlanetAttribute.MOONS, moonsError);
+
+        HookErrorToText(PlanetAttribute.DIAMETER, diameterError);
+
+        HookErrorToText(PlanetAttribute.TEMPERATURE, temperatureError);
+
+        HookErrorToAlert(PlanetAttribute.IMAGE_FILE, Alert.AlertType.ERROR);
+    }
+
+    private void HookErrorToText(PlanetAttribute attribute, Text text){
 
         currentPlanet.addErrorListener(new MapChangeListener<PlanetAttribute, String>() {
             @Override
             public void onChanged(Change<? extends PlanetAttribute, ? extends String> change) {
-
-                if(change.getKey() == PlanetAttribute.NAME){
-                    nameError.setText(change.getMap().get(PlanetAttribute.NAME));
-                }else if(!change.getMap().containsKey(PlanetAttribute.NAME)){
-                    nameError.setText("");
+                if(change.getKey() == attribute){
+                    text.setText(change.getMap().get(attribute));
+                }else if(!change.getMap().containsKey(attribute)){
+                    text.setText("");
                 }
-
             }
         });
+    }
 
+    private void HookErrorToAlert(PlanetAttribute attribute, Alert.AlertType alertType){
         currentPlanet.addErrorListener(new MapChangeListener<PlanetAttribute, String>() {
             @Override
             public void onChanged(Change<? extends PlanetAttribute, ? extends String> change) {
 
-                if(change.getKey() == PlanetAttribute.MOONS){
-                    moonsError.setText(change.getMap().get(PlanetAttribute.MOONS));
-                }else if(!change.getMap().containsKey(PlanetAttribute.MOONS)){
-                    moonsError.setText("");
-                }
-
-            }
-        });
-
-        currentPlanet.addErrorListener(new MapChangeListener<PlanetAttribute, String>() {
-            @Override
-            public void onChanged(Change<? extends PlanetAttribute, ? extends String> change) {
-
-                if(change.getKey() == PlanetAttribute.DIAMETER){
-                    diameterError.setText(change.getMap().get(PlanetAttribute.DIAMETER));
-                }else if(!change.getMap().containsKey(PlanetAttribute.DIAMETER)){
-                    diameterError.setText("");
-                }
-
-            }
-        });
-
-        currentPlanet.addErrorListener(new MapChangeListener<PlanetAttribute, String>() {
-            @Override
-            public void onChanged(Change<? extends PlanetAttribute, ? extends String> change) {
-
-                if(change.getKey() == PlanetAttribute.TEMPERATURE){
-                    temperatureError.setText(change.getMap().get(PlanetAttribute.TEMPERATURE));
-                }else if(!change.getMap().containsKey(PlanetAttribute.TEMPERATURE)){
-                    temperatureError.setText("");
-                }
-
-            }
-        });
-
-        currentPlanet.addErrorListener(new MapChangeListener<PlanetAttribute, String>() {
-            @Override
-            public void onChanged(Change<? extends PlanetAttribute, ? extends String> change) {
-
-                if(change.getKey() == PlanetAttribute.IMAGE_FILE){
-                    Alert fileAlert = new Alert(Alert.AlertType.ERROR);
-                    fileAlert.setContentText(change.getMap().get(PlanetAttribute.IMAGE_FILE));
-                    fileAlert.show();
+                if(change.getKey() == attribute && change.getMap().get(attribute) != null){
+                    Alert fileAlert = new Alert(alertType);
+                    fileAlert.setContentText(change.getMap().get(attribute));
+                    fileAlert.showAndWait();
                 }
 
             }
@@ -191,21 +166,28 @@ public class PlanetController {
     }
 
     @FXML
-    void loadPlanet(ActionEvent event){
+    void confirmLoadPlanet(ActionEvent event){
         File file = fileChooser.showOpenDialog(stage);
+
         if (file != null) {
-            //build planet
-            try {
-                currentPlanet = PlanetBuilder.BuildPlanetFromFile(file);
 
-                loadCurrentPlanet();
+            confirmLoadAlert.showAndWait();
 
-            } catch (IOException e) {
-
-                Alert failedLoadAlert = new Alert(Alert.AlertType.ERROR);
-                failedLoadAlert.setContentText("Failed to load planet.");
-                failedLoadAlert.show();
+            if(confirmLoadAlert.getResult() == confirm){
+                loadPlanet(file);
             }
+
+        }
+    }
+
+    private void loadPlanet(File file){
+        try {
+            currentPlanet = PlanetBuilder.BuildPlanetFromFile(file);
+            loadCurrentPlanet();
+        } catch (IOException e) {
+            Alert failedLoadAlert = new Alert(Alert.AlertType.ERROR);
+            failedLoadAlert.setContentText("Failed to load planet.");
+            failedLoadAlert.show();
         }
     }
 
@@ -225,14 +207,14 @@ public class PlanetController {
 
     }
 
-    void handleNameChange(String newName, String oldName){
+    private void handleNameChange(String newName, String oldName){
 
         currentPlanet.setName(newName);
 
         fancyPlanetName.setText(currentPlanet.getName());
     }
 
-    void handleTemperatureChange(String newCelsius, String oldCelsius){
+    private void handleTemperatureChange(String newCelsius, String oldCelsius){
 
         currentPlanet.setTemperature(newCelsius);
 
@@ -244,7 +226,7 @@ public class PlanetController {
 
     }
 
-    void handleDiameterChange(String newKM, String oldKM){
+    private void handleDiameterChange(String newKM, String oldKM){
 
         currentPlanet.setDiameter(newKM);
 
@@ -258,9 +240,22 @@ public class PlanetController {
 
     }
 
-    void handleMoonsChange(String newMoons, String oldMoons){
+    private void handleMoonsChange(String newMoons, String oldMoons){
 
         currentPlanet.setNumberOfMoons(newMoons);
 
+    }
+
+    class ConfirmationAlert{
+
+        ConfirmationAlert(String message){
+            ButtonType confirm = new ButtonType("Yes", ButtonBar.ButtonData.OK_DONE);
+            ButtonType cancel = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
+            Text messageText = new Text(message);
+            messageText.setWrappingWidth(200);
+            Alert confirmLoadAlert = new Alert(Alert.AlertType.WARNING, null, confirm, cancel);
+            confirmLoadAlert.getDialogPane().setContent(messageText);
+            confirmLoadAlert.getDialogPane().setPadding(new Insets(10, 10, 10, 10));
+        }
     }
 }

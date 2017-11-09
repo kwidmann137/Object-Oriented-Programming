@@ -30,7 +30,7 @@ public class PlanetValidator {
         validateTemperature(String.valueOf(planet.getTemperature()));
         validateMoons(String.valueOf(planet.getNumberOfMoons()));
 
-        return this.hasErrors();
+        return !this.hasErrors();
     }
 
     boolean validateName(String name){
