@@ -6,5 +6,5 @@ public enum PlanetAttribute
     TEMPERATURE,
     DIAMETER,
     MOONS,
-    IMAGE_FILE
+    IMAGE_URL
 }

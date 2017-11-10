@@ -9,17 +9,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 
 public class PlanetValidator {
 
     private ObservableMap<PlanetAttribute, String> errors;
-    private List<String> allowedFileTypes = Arrays.asList("png", "bmp", "jpeg", "jpg");
 
-    public PlanetValidator(){
+    PlanetValidator(){
         this.errors = FXCollections.observableMap(new HashMap<>());
     }
 
@@ -33,7 +30,7 @@ public class PlanetValidator {
         return !this.hasErrors();
     }
 
-    boolean validateName(String name){
+    public boolean validateName(String name){
 
         errors.remove(PlanetAttribute.NAME);
 
@@ -45,7 +42,7 @@ public class PlanetValidator {
         return true;
     }
 
-    boolean validateTemperature(String temp){
+    public boolean validateTemperature(String temp){
 
         errors.remove(PlanetAttribute.TEMPERATURE);
 
@@ -58,15 +55,23 @@ public class PlanetValidator {
             return false;
         }
 
-        if(validTemp < -273.15 || validTemp > 500){
+        return validateTemperature(validTemp);
+    }
+
+    boolean validateTemperature(Double temp){
+
+        errors.remove(PlanetAttribute.TEMPERATURE);
+
+        if(temp < -273.15 || temp > 500){
             errors.put(PlanetAttribute.TEMPERATURE, "Must be between -273.15C and 500C");
             return false;
         }
 
         return true;
+
     }
 
-    boolean validateDiameter(String diameter){
+    public boolean validateDiameter(String diameter){
 
         errors.remove(PlanetAttribute.DIAMETER);
 
@@ -78,7 +83,14 @@ public class PlanetValidator {
             return false;
         }
 
-        if(validDiameter < 0 || validDiameter > 200000){
+        return validateDiameter(validDiameter);
+    }
+
+    boolean validateDiameter(int diameter){
+
+        errors.remove(PlanetAttribute.DIAMETER);
+
+        if(diameter < 0 || diameter > 200000){
             errors.put(PlanetAttribute.DIAMETER, "Diameter must be between 0 and 200,000");
             return false;
         }
@@ -86,11 +98,13 @@ public class PlanetValidator {
         return true;
     }
 
-    boolean validateMoons(String moons){
+
+    public boolean validateMoons(String moons){
 
         errors.remove(PlanetAttribute.MOONS);
 
-        double validMoons;
+        int validMoons;
+
         try{
             validMoons = NumberFormat.getNumberInstance(Locale.US).parse(moons).intValue();
         }catch(ParseException e){
@@ -98,28 +112,35 @@ public class PlanetValidator {
             return false;
         }
 
-        if(validMoons < 0 || validMoons > 1000){
+        return validateMoons(validMoons);
+    }
+
+    boolean validateMoons(int moons){
+        errors.remove(PlanetAttribute.MOONS);
+
+        if(moons < 0 || moons > 1000){
             errors.put(PlanetAttribute.MOONS, "Number of moons must be between 0 and 1,000");
             return false;
         }
+
         return true;
     }
 
     boolean validateImageFile(File file){
 
-        errors.remove(PlanetAttribute.IMAGE_FILE);
+        errors.remove(PlanetAttribute.IMAGE_URL);
 
         boolean validFile;
 
         try {
             validFile =  file != null && file.exists() && file.canRead() && Files.probeContentType(file.toPath()).contains("image");
         } catch (IOException e) {
-            errors.put(PlanetAttribute.IMAGE_FILE, "Invalid image file supplied");
+            errors.put(PlanetAttribute.IMAGE_URL, "Invalid image file. Valid files are .png, .bmp, .jpg, .jpeg");
             return false;
         }
 
         if(!validFile){
-            errors.put(PlanetAttribute.IMAGE_FILE, "Invalid image file supplied");
+            errors.put(PlanetAttribute.IMAGE_URL, "Invalid image file supplied.  Valid files are .png, .bmp, .jpg, .jpeg");
             return false;
         }
 
@@ -127,24 +148,7 @@ public class PlanetValidator {
 
     }
 
-    public String getAllErrors()
-    {
-        StringBuilder allErrors = new StringBuilder();
-        String formattedError;
-        for(PlanetAttribute attribute : PlanetAttribute.values()){
-            if(errors.containsKey(attribute)){
-                formattedError = String.format("%c %s\n", 0x2022, errors.get(attribute));
-                allErrors.append(formattedError);
-            }
-        }
-        return allErrors.toString();
-    }
-
-    public String getError(PlanetAttribute attribute){
-        return errors.get(attribute);
-    }
-
-    public boolean hasErrors(){
+    private boolean hasErrors(){
         return !errors.isEmpty();
     }
 

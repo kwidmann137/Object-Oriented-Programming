@@ -17,11 +17,12 @@ public class PlanetBuilder {
 
         attributes = PlanetFileGateway.getPropertiesFromFile(file);
 
-        planet.setName(attributes.get(PlanetAttribute.NAME));
-        planet.setDiameter(attributes.get(PlanetAttribute.DIAMETER));
-        planet.setTemperature(attributes.get(PlanetAttribute.TEMPERATURE));
-        planet.setNumberOfMoons(attributes.get(PlanetAttribute.MOONS));
-        planet.setImageFile(new File(attributes.get(PlanetAttribute.IMAGE_FILE)));
+        planet.setName(attributes.getOrDefault(PlanetAttribute.NAME, ""));
+        planet.setDiameter(Integer.parseInt(attributes.getOrDefault(PlanetAttribute.DIAMETER, "-1")));
+        planet.setTemperature(Double.parseDouble(attributes.getOrDefault(PlanetAttribute.TEMPERATURE, "-500")));
+        planet.setNumberOfMoons(Integer.parseInt(attributes.getOrDefault(PlanetAttribute.MOONS, "-1")));
+        File imageFile = new File(attributes.getOrDefault(PlanetAttribute.IMAGE_URL, "/images/no_image.png"));
+        planet.setImageUrlFromFile(imageFile);
 
         return planet;
     }

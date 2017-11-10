@@ -1,21 +1,15 @@
 package models;
 
 import javafx.collections.MapChangeListener;
-import javafx.scene.image.Image;
 
 import java.io.File;
-import java.io.IOException;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.Locale;
 
 public class Planet {
     private String name;
     private int diameter;
     private double temperature;
     private int numberOfMoons;
-    private File imageFile;
-    private Image image;
+    private String imageUrl;
     private PlanetValidator validator;
 
     public Planet(){
@@ -23,8 +17,7 @@ public class Planet {
         this.diameter = -1;
         this.temperature = -500;
         this.numberOfMoons = -1;
-        this.imageFile = new File("/images/no_image.png");
-        this.image = new Image(this.imageFile.toURI().toString());
+        this.imageUrl = "/images/no_image.png";
         this.validator = new PlanetValidator();
     }
 
@@ -39,13 +32,9 @@ public class Planet {
         return name;
     }
 
-    public void setDiameter(String diameter){
+    public void setDiameter(int diameter){
         if(validator.validateDiameter(diameter)){
-            try {
-                this.diameter = NumberFormat.getNumberInstance(Locale.US).parse(diameter).intValue();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            this.diameter = diameter;
         }
     }
 
@@ -53,9 +42,9 @@ public class Planet {
         return diameter;
     }
 
-    public void setTemperature(String temperature){
+    public void setTemperature(Double temperature){
         if(validator.validateTemperature(temperature)){
-            this.temperature = Double.parseDouble(temperature);
+            this.temperature = temperature;
         }
 
     }
@@ -64,10 +53,10 @@ public class Planet {
         return temperature;
     }
 
-    public void setNumberOfMoons(String moons)
+    public void setNumberOfMoons(int moons)
     {
         if(validator.validateMoons(moons)){
-            this.numberOfMoons = Integer.parseInt(moons);
+            this.numberOfMoons = moons;
         }
     }
 
@@ -75,19 +64,14 @@ public class Planet {
         return numberOfMoons;
     }
 
-    public void setImageFile(File file){
+    public void setImageUrlFromFile(File file){
         if(validator.validateImageFile(file)){
-            this.imageFile = file;
-            this.image = new Image(this.imageFile.toURI().toString());
+            this.imageUrl = file.toURI().toString();
         }
     }
 
-    public String getImageFilePath(){
-        return this.imageFile.getPath();
-    }
-
-    public Image getImage(){
-        return image;
+    public String getImageUrl(){
+        return imageUrl;
     }
 
     public PlanetValidator getValidator(){
@@ -104,9 +88,5 @@ public class Planet {
         }
 
         PlanetFileGateway.savePlanetToFile(this, file);
-    }
-
-    public void addErrorListener(PlanetAttribute imageFile, Object o) {
-
     }
 }

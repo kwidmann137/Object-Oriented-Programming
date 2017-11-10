@@ -6,7 +6,7 @@ import java.util.Properties;
 
 public class PlanetFileGateway {
 
-    public static void savePlanetToFile(Planet planet, File file) throws IOException {
+    static void savePlanetToFile(Planet planet, File file) throws IOException {
 
         OutputStream outputFile = new FileOutputStream(file);
 
@@ -18,7 +18,7 @@ public class PlanetFileGateway {
         newProps.setProperty(PlanetAttribute.DIAMETER.toString(), String.valueOf(planet.getDiameter()));
         newProps.setProperty(PlanetAttribute.TEMPERATURE.toString(), String.valueOf(planet.getTemperature()));
         newProps.setProperty(PlanetAttribute.MOONS.toString(), String.valueOf(planet.getNumberOfMoons()));
-        newProps.setProperty(PlanetAttribute.IMAGE_FILE.toString(), planet.getImageFilePath());
+        newProps.setProperty(PlanetAttribute.IMAGE_URL.toString(), planet.getImageUrl());
 
         newProps.store(outputFile, null);
 
@@ -34,7 +34,9 @@ public class PlanetFileGateway {
         HashMap<PlanetAttribute, String> planetProperties = new HashMap<>();
 
         for(PlanetAttribute attribute : PlanetAttribute.values()){
-            planetProperties.put(attribute, fileProps.getProperty(attribute.toString()));
+            if(fileProps.getProperty(attribute.toString()) != null){
+                planetProperties.put(attribute, fileProps.getProperty(attribute.toString()));
+            }
         }
 
         input.close();
