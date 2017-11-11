@@ -1,8 +1,10 @@
 package models;
 
+import Exceptions.SaveException;
 import javafx.collections.MapChangeListener;
 
 import java.io.File;
+import java.io.IOException;
 
 public class Planet {
     private String name;
@@ -66,7 +68,7 @@ public class Planet {
 
     public void setImageUrlFromFile(File file){
         if(validator.validateImageFile(file)){
-            this.imageUrl = file.toURI().toString();
+            this.imageUrl = file.getPath();
         }
     }
 
@@ -82,9 +84,9 @@ public class Planet {
         this.validator.addErrorListener(listener);
     }
 
-    public void saveToFile(File file) throws Exception {
+    public void saveToFile(File file) throws SaveException, IOException {
         if(!validator.validatePlanet(this)){
-            throw new Exception("Failed to save planet.  Correct errors and try again.");
+            throw new SaveException("Failed to save planet.  Correct errors and try again.");
         }
 
         PlanetFileGateway.savePlanetToFile(this, file);

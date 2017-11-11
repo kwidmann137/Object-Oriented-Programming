@@ -130,18 +130,28 @@ public class PlanetValidator {
 
         errors.remove(PlanetAttribute.IMAGE_URL);
 
-        boolean validFile;
-
-        try {
-            validFile =  file != null && file.exists() && file.canRead() && Files.probeContentType(file.toPath()).contains("image");
-        } catch (IOException e) {
-            errors.put(PlanetAttribute.IMAGE_URL, "Invalid image file. Valid files are .png, .bmp, .jpg, .jpeg");
+        if(file == null){
+            errors.put(PlanetAttribute.IMAGE_URL, "No file given.");
             return false;
         }
 
-        if(!validFile){
-            errors.put(PlanetAttribute.IMAGE_URL, "Invalid image file supplied.  Valid files are .png, .bmp, .jpg, .jpeg");
+        if(file.exists()){
+            errors.put(PlanetAttribute.IMAGE_URL, "File does not exist");
             return false;
+        }
+
+        if( file.canRead()){
+            errors.put(PlanetAttribute.IMAGE_URL, "Can not read file");
+            return false;
+        }
+
+        try {
+            if(!Files.probeContentType(file.toPath()).contains("image")){
+                errors.put(PlanetAttribute.IMAGE_URL, "Invalid image file. Valid files are .png, .bmp, .jpg, .jpeg");
+                return false;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return true;
