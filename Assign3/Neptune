@@ -1,6 +1,6 @@
-#Fri Nov 10 14:47:48 CST 2017
+#Sun Nov 12 19:27:45 CST 2017
 MOONS=12
-DIAMETER=10000
+DIAMETER=10000.0
 TEMPERATURE=-21.5
 NAME=Neptune
-IMAGE_URL=file\:/home/kyle/Java-Projects/Object-Oriented-Programming/Assign3/src/images/neptune.png
+IMAGE_URL=file\:/home/kyle/Java-Projects/UTSA/Object-Oriented-Programming/Assign3/src/Images/neptune.png
