@@ -98,7 +98,7 @@ public class Planet {
      * @throws IOException - if error while saving to file
      */
     public void saveToFile(File file) throws SaveException, IOException {
-        if(!validator.validatePlanet(this)){
+        if(!validator.validatePlanet(this) || validator.hasErrors()){
             throw new SaveException("Failed to save planet.  Correct errors and try again.");
         }
 

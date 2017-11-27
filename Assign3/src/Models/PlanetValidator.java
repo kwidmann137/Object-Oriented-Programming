@@ -188,7 +188,7 @@ public class PlanetValidator {
 
     }
 
-    private boolean hasErrors(){
+    boolean hasErrors(){
         return !errors.isEmpty();
     }
 
