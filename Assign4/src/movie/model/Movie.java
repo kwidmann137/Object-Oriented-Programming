@@ -71,18 +71,6 @@ public class Movie {
 		this.observableMovie.addObserver(observer);
 	}
 
-	public void deleteObserver(Observer observer){
-		this.observableMovie.deleteObserver(observer);
-	}
-
-	public void deleteObservers(){
-		this.observableMovie.deleteObservers();
-	}
-
-	void notifyObservers(){
-		this.observableMovie.notifyObservers();
-	}
-
 	void notifyObservers(Object arg){
 		this.observableMovie.notifyObservers(arg);
 	}

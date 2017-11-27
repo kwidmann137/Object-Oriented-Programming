@@ -2,6 +2,7 @@ package movie.view;
 
 import java.net.URL;
 import java.util.Objects;
+import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
@@ -16,7 +17,7 @@ import javafx.fxml.Initializable;
 import movie.model.Movie;
 import movie.model.MovieSingleton;
 
-public class MovieController implements Initializable {
+public class MovieController implements Initializable, Observer {
 
     @FXML
     private TextField movieTitle;
@@ -36,12 +37,11 @@ public class MovieController implements Initializable {
     @FXML
     private Slider ratingSlider;
 
-    private Observer movieObserver;
-
-    public MovieController() {
-
-    }
-	
+    /**
+     * Initializes text filters, listeners and observers
+     * @param location
+     * @param resources
+     */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
@@ -49,17 +49,13 @@ public class MovieController implements Initializable {
 
         setTextListeners();
 
-        setObservers();
+        MovieSingleton.getMovieInstance().addObserver(this);
 
 	}
 
-	public void cleanup(){
-        MovieSingleton.getMovieInstance().deleteObserver(movieObserver);
-    }
-
 	private void setTextFilters(){
 
-        Pattern validReleaseYear = Pattern.compile("[0-9]*");
+        Pattern validReleaseYear = Pattern.compile("[0-9]{0,4}");
 
         UnaryOperator<TextFormatter.Change> filter = c -> {
             String text = c.getControlNewText();
@@ -95,42 +91,27 @@ public class MovieController implements Initializable {
         ratingSlider.valueProperty().addListener((observable, oldValue, newValue) -> movie.setRating(newValue.intValue()));
     }
 
-    private void setObservers(){
+    /**
+     * Sets the update method for the observed Movie instance
+     * @param o - observable object
+     * @param arg - Object which should represent a Movie instance
+     */
+    @Override
+    public void update(Observable o, Object arg) {
+        if(arg instanceof Movie){
+            Movie movie = (Movie) arg;
 
-        movieObserver = (observable, arg) -> {
-            if(arg instanceof Movie){
-                Movie movie = (Movie) arg;
-
-                if(!Objects.equals(movie.getDirector(), director.getText())){
-                    director.setText(movie.getDirector());
-                }
-                if(!Objects.equals(movie.getMovieTitle(), movieTitle.getText())){
-                    movieTitle.setText(movie.getMovieTitle());
-                }
-                if(!Objects.equals(movie.getWriter(), writer.getText())){
-                    writer.setText(movie.getWriter());
-                }
-                if(movie.getReleaseYear() == Movie.DEFAULT_YEAR){
-                    releaseYear.setText("");
-                }else{
-                    int newYear = movie.getReleaseYear();
-                    int displayedYear;
-                    if (Objects.equals(releaseYear.getText(), "")) {
-                        displayedYear = Movie.DEFAULT_YEAR;
-                    }else{
-                        displayedYear = Integer.parseInt(releaseYear.getText());
-                    }
-                    if (displayedYear != newYear) {
-                        releaseYear.textProperty().set(String.valueOf(newYear));
-                    }
-                }
-                if(movie.getRating() != ratingSlider.getValue()){
-                    ratingText.setText(String.valueOf(movie.getRating()));
-                    ratingSlider.setValue(movie.getRating());
-                }
+            director.setText(movie.getDirector());
+            movieTitle.setText(movie.getMovieTitle());
+            writer.setText(movie.getWriter());
+            if(movie.getReleaseYear() == Movie.DEFAULT_YEAR){
+                releaseYear.setText("");
+            }else{
+                releaseYear.setText(String.valueOf(movie.getReleaseYear()));
             }
-        };
+            ratingText.setText(String.valueOf(movie.getRating()));
+            ratingSlider.setValue(movie.getRating());
+        }
 
-        MovieSingleton.getMovieInstance().addObserver(movieObserver);
     }
 }
