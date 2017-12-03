@@ -1,7 +1,6 @@
 package movie.view;
 
 import java.net.URL;
-import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
@@ -55,7 +54,7 @@ public class MovieController implements Initializable, Observer {
 
 	private void setTextFilters(){
 
-        Pattern validReleaseYear = Pattern.compile("[0-9]{0,4}");
+        Pattern validReleaseYear = Pattern.compile("[0-9]*");
 
         UnaryOperator<TextFormatter.Change> filter = c -> {
             String text = c.getControlNewText();
