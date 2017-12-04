@@ -11,7 +11,7 @@ import org.junit.Test;
 import time.MyTimer;
 
 public class MotorTest {
-	private static MyTimer timer;
+	private volatile static MyTimer timer;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -80,23 +80,21 @@ public class MotorTest {
 //		assertTrue(motor.isOn());
 //	}
 
-	@Test(timeout = 10100)
+	@Test(timeout = 6100)
 	public void testMotorTimeoutWhenAlreadyOn(){
-		Motor motor = new Motor(timer);
+		Motor motor = new Motor();
+		timer.addObserver(motor);
 
 		motor.turnOn();
 		assertTrue(motor.isOn());
 
 		motor.turnOn();
 		assertTrue(motor.isOn());
+
+		System.out.println("Pre loop on thread:" + Thread.currentThread());
 
 		while(motor.isOn()){
-		}
-
-		try{
-			Thread.sleep(3000);
-		}catch (InterruptedException e) {
-			fail("Thread failed");
+//			System.out.println("During loop on thread:" + Thread.currentThread());
 		}
 
 		System.out.println("Post loop on thread:" + Thread.currentThread());

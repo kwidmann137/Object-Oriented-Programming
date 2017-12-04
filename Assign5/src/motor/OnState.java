@@ -21,6 +21,7 @@ public class OnState implements MotorState{
 
     @Override
     public void off() {
+        System.out.println("Setting motor off on thread: " + Thread.currentThread());
         motor.setOff();
     }
 
