@@ -16,8 +16,9 @@ public class Elevator implements Observer {
     private GoingUpState goingUp;
     private IdleState idle;
     private ElevatorState currentState;
-    final int BOTTOM_FLOOR = 1;
-    final int TOP_FLOOR = 5;
+    //These should only be public for testing
+    public final int BOTTOM_FLOOR = 1;
+    public final int TOP_FLOOR = 5;
     final int MS_PER_FLOOR = 10000;
     private int currentFloor;
 
@@ -66,20 +67,24 @@ public class Elevator implements Observer {
         this.setState(idle);
     }
 
-    int getCurrentFloor(){
+    //this should only be public for testing
+    public int getCurrentFloor(){
         return this.currentFloor;
     }
 
-    void setCurrentFloor(int floor){
+    //This should only be public for testing
+    public void setCurrentFloor(int floor){
         this.currentFloor = floor;
         System.out.println("The elevator arrives at floor " + currentFloor);
     }
 
-    Doors getDoors(){
+    //This should only be public for testing
+    public Doors getDoors(){
         return this.doors;
     }
 
-    Motor getMotor(){
+    //This should only be public for testing
+    public Motor getMotor(){
         return this.motor;
     }
 

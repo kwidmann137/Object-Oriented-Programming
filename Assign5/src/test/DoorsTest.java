@@ -62,11 +62,9 @@ public class DoorsTest {
         assertTrue(doors.areOpen());
 
         doors.close();
-
-        Thread.sleep(5000);
-
         assertTrue(!doors.areOpen());
     }
+
 
     @Test
     public void testDoorTimeoutWhenAlreadyOpen() throws InterruptedException {
