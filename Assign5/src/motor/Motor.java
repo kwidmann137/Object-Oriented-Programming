@@ -13,11 +13,12 @@ public class Motor extends Observable implements Observer{
     private OnState on;
     private OffState off;
     private MotorState currentState;
-    public static final int MAX_RUN_TIME_MS = 2000;
+    public static final int MAX_RUN_TIME_MS = 10000;
     private int timeToRun;
 
-    public Motor()
+    public Motor(MyTimer timer)
     {
+        timer.addObserver(this);
         this.on = new OnState(this);
         this.off = new OffState(this);
         this.setState(off);
@@ -29,12 +30,16 @@ public class Motor extends Observable implements Observer{
     }
 
     public void turnOn(){
-        this.timeToRun = MAX_RUN_TIME_MS;
+        if(!this.isOn()){
+            this.timeToRun = MAX_RUN_TIME_MS;
+        }
         this.currentState.on();
     }
 
     public void turnOn(int msToRun){
-        this.timeToRun = msToRun;
+        if(!this.isOn()){
+            this.timeToRun = msToRun;
+        }
         this.currentState.on();
     }
 
@@ -47,10 +52,6 @@ public class Motor extends Observable implements Observer{
     }
 
     public boolean isOn(){
-//        System.out.println("Check is on on thread: " + Thread.currentThread());
-        if(this.currentState != on){
-            System.out.println("Exiting soon on thread: " + Thread.currentThread());
-        }
         return this.currentState == on;
     }
 

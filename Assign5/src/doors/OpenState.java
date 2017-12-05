@@ -18,7 +18,7 @@ public class OpenState implements DoorState {
 
     @Override
     public void open() {
-
+        msOpen = 0;
     }
 
     @Override
@@ -29,7 +29,7 @@ public class OpenState implements DoorState {
     @Override
     public void updateTime() {
         msOpen += MyTimer.MS_PER_TICK;
-        if(msOpen > doors.TIME_TO_CLOSE_MS){
+        if(msOpen >= Doors.TIME_TO_CLOSE_MS){
             doors.setClosed();
         }
     }

@@ -22,7 +22,7 @@ public class Elevator implements Observer {
     private int currentFloor;
 
     public Elevator(MyTimer timer){
-        this.motor = new Motor();
+        this.motor = new Motor(timer);
         this.motor.addObserver(this);
         this.doors = new Doors(timer);
         this.doors.addObserver(this);

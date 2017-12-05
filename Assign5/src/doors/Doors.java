@@ -12,7 +12,7 @@ public class Doors extends Observable implements Observer {
     private DoorState currentState;
     private ClosedState closed;
     private OpenState open;
-    final int TIME_TO_CLOSE_MS = 5000;
+    static final int TIME_TO_CLOSE_MS = 5000;
 
     public Doors(MyTimer timer)
     {
