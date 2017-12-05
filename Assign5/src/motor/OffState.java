@@ -12,7 +12,7 @@ public class OffState implements MotorState{
 
     @Override
     public void on() {
-        motor.setOn();
+        motor.setOnState();
     }
 
     @Override

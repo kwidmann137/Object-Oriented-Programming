@@ -1,7 +1,5 @@
 package motor;
 
-import elevator.Elevator;
-import states.ElevatorState;
 import states.MotorState;
 import time.MyTimer;
 
@@ -43,11 +41,11 @@ public class Motor extends Observable implements Observer{
         this.currentState.on();
     }
 
-    void setOn(){
+    void setOnState(){
         this.setState(on);
     }
 
-    void setOff(){
+    void setOffState(){
         this.setState(off);
     }
 

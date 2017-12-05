@@ -1,7 +1,6 @@
 package doors;
 
 import states.DoorState;
-import states.TimedState;
 
 public class ClosedState implements DoorState {
 
@@ -13,7 +12,7 @@ public class ClosedState implements DoorState {
 
     @Override
     public void open() {
-        doors.setOpen();
+        doors.setOpenState();
     }
 
     @Override

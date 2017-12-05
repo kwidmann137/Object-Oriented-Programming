@@ -33,7 +33,7 @@ public class MotorTest {
 		motor.turnOn();
 
 		while(motor.isOn()){
-			Thread.sleep(500);
+			Thread.sleep(100);
 		}
 
 		//if test makes it here before 10.1 seconds then test passes
@@ -48,7 +48,7 @@ public class MotorTest {
 
 		motor.turnOn(5000);
 		while(motor.isOn()){
-			Thread.sleep(500);
+			Thread.sleep(100);
 		}
 
 		//if test makes it here before 5.1 seconds then test passes
@@ -95,7 +95,7 @@ public class MotorTest {
 		assertTrue(motor.isOn());
 
 		while(motor.isOn()){
-			Thread.sleep(500);
+			Thread.sleep(100);
 		}
 
 		// passes if motor turns off before 10.1s
@@ -113,7 +113,7 @@ public class MotorTest {
 		assertTrue(motor.isOn());
 
 		while(motor.isOn()){
-			Thread.sleep(500);
+			Thread.sleep(100);
 		}
 
 		// passes if motor turns off before 10.1s

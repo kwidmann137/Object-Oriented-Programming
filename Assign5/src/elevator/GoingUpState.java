@@ -1,6 +1,5 @@
 package elevator;
 
-import doors.Doors;
 import motor.Motor;
 import states.ElevatorState;
 
@@ -8,7 +7,6 @@ public class GoingUpState implements ElevatorState {
 
     private Elevator elevator;
     private boolean motorRunning = false;
-    private boolean doorsOpen = false;
 
     GoingUpState(Elevator elevator){
         this.elevator = elevator;
@@ -38,7 +36,7 @@ public class GoingUpState implements ElevatorState {
         this.motorRunning = motor.isOn();
 
         if(!motorRunning){
-            elevator.setIdle();
+            elevator.setIdleState();
             updateElevatorFloor();
             elevator.openDoors();
         }
@@ -55,11 +53,6 @@ public class GoingUpState implements ElevatorState {
 
         elevator.setCurrentFloor(currentFloor);
 
-    }
-
-    @Override
-    public void handleDoorStateChange(Doors doors) {
-        this.doorsOpen = doors.areOpen();
     }
 
     @Override

@@ -1,7 +1,6 @@
 package doors;
 
 import states.DoorState;
-import states.TimedState;
 import time.MyTimer;
 
 public class OpenState implements DoorState {
@@ -23,14 +22,14 @@ public class OpenState implements DoorState {
 
     @Override
     public void close() {
-        doors.setClosed();
+        doors.setClosedState();
     }
 
     @Override
     public void updateTime() {
         msOpen += MyTimer.MS_PER_TICK;
         if(msOpen >= Doors.TIME_TO_CLOSE_MS){
-            doors.setClosed();
+            doors.setClosedState();
         }
     }
 

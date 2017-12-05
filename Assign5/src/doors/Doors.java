@@ -1,13 +1,12 @@
 package doors;
 
-import elevator.Elevator;
 import states.DoorState;
 import time.MyTimer;
 
 import java.util.Observable;
 import java.util.Observer;
 
-public class Doors extends Observable implements Observer {
+public class Doors implements Observer {
 
     private DoorState currentState;
     private ClosedState closed;
@@ -37,15 +36,13 @@ public class Doors extends Observable implements Observer {
     void setState(DoorState state){
         this.currentState = state;
         System.out.println("Elevator doors are " + currentState.toString().toLowerCase());
-        this.setChanged();
-        this.notifyObservers();
     }
 
-    void setOpen(){
+    void setOpenState(){
         this.setState(open);
     }
 
-    void setClosed(){
+    void setClosedState(){
         this.setState(closed);
     }
 

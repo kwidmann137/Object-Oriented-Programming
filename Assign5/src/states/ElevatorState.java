@@ -1,6 +1,5 @@
 package states;
 
-import doors.Doors;
 import motor.Motor;
 
 public interface ElevatorState {
@@ -14,7 +13,5 @@ public interface ElevatorState {
     void closeDoors();
 
     void handleMotorStateChange(Motor motor);
-
-    void handleDoorStateChange(Doors doors);
 
 }

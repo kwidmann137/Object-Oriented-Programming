@@ -1,7 +1,6 @@
 package test;
 
 import doors.Doors;
-import motor.Motor;
 
 //import motor.Motor;
 import org.junit.AfterClass;

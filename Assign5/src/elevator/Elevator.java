@@ -3,7 +3,6 @@ package elevator;
 import doors.Doors;
 import motor.Motor;
 import states.ElevatorState;
-import time.MyTimer;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -22,23 +21,22 @@ public class Elevator implements Observer {
     final int MS_PER_FLOOR = 10000;
     private int currentFloor;
 
-    public Elevator(MyTimer timer){
-        this.motor = new Motor(timer);
+    public Elevator(Motor motor, Doors doors){
+        this.motor = motor;
         this.motor.addObserver(this);
-        this.doors = new Doors(timer);
-        this.doors.addObserver(this);
+        this.doors = doors;
         this.goingUp = new GoingUpState(this);
         this.goingDown = new GoingDownState(this);
         this.idle = new IdleState(this);
-        this.setState(idle);
         this.currentFloor = BOTTOM_FLOOR;
+        this.setState(idle);
     }
 
-    public void sendUp(){
+    public void goUp(){
         this.currentState.up();
     }
 
-    public void sendDown(){
+    public void goDown(){
         this.currentState.down();
     }
 
@@ -55,15 +53,15 @@ public class Elevator implements Observer {
         System.out.println("Elevator is " + this.currentState.toString().toLowerCase());
     }
 
-    void setGoingUp(){
+    void setGoingUpState(){
         this.setState(goingUp);
     }
 
-    void setGoingDown(){
+    void setGoingDownState(){
         this.setState(goingDown);
     }
 
-    void setIdle(){
+    void setIdleState(){
         this.setState(idle);
     }
 
@@ -90,9 +88,7 @@ public class Elevator implements Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        if(observable instanceof Doors){
-            this.currentState.handleDoorStateChange((Doors) observable);
-        }else if(observable instanceof Motor){
+        if(observable instanceof Motor){
             this.currentState.handleMotorStateChange((Motor) observable);
         }
     }

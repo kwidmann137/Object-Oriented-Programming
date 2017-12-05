@@ -21,14 +21,14 @@ public class OnState implements MotorState{
 
     @Override
     public void off() {
-        motor.setOff();
+        motor.setOffState();
     }
 
     @Override
     public void updateTime() {
         msRun += MyTimer.MS_PER_TICK;
         if(msRun >= motor.getRunTime()){
-            motor.setOff();
+            motor.setOffState();
         }
     }
 

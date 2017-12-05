@@ -1,6 +1,5 @@
 package elevator;
 
-import doors.Doors;
 import motor.Motor;
 import states.ElevatorState;
 
@@ -17,7 +16,7 @@ public class IdleState implements ElevatorState {
         int floorsLeft = elevator.TOP_FLOOR - elevator.getCurrentFloor();
         int motorTimeout = getMotorTimeout(floorsLeft);
         elevator.getMotor().turnOn(motorTimeout);
-        elevator.setGoingUp();
+        elevator.setGoingUpState();
     }
 
     @Override
@@ -26,7 +25,7 @@ public class IdleState implements ElevatorState {
         int floorsLeft = elevator.getCurrentFloor() - elevator.BOTTOM_FLOOR;
         int motorTimeout = getMotorTimeout(floorsLeft);
         elevator.getMotor().turnOn(motorTimeout);
-        elevator.setGoingDown();
+        elevator.setGoingDownState();
     }
 
     private int getMotorTimeout(int floorsLeft){
@@ -53,11 +52,6 @@ public class IdleState implements ElevatorState {
 
     @Override
     public void handleMotorStateChange(Motor motor) {
-
-    }
-
-    @Override
-    public void handleDoorStateChange(Doors doors){
 
     }
 
