@@ -23,15 +23,15 @@ public class MyTimer extends Observable implements Runnable {
 
 		while(!canceled) {
 			long currentTime = System.currentTimeMillis();
-		
+
 			//notify observers every tick
-			if(currentTime - startTime > MS_PER_TICK) {
-			
+			if (currentTime - startTime > MS_PER_TICK) {
+
 				this.setChanged();
 				this.notifyObservers();
-			
+
 				startTime = currentTime;
 			}
-		}	
+		}
 	}
 }

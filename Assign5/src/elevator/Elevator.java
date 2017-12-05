@@ -11,9 +11,9 @@ public class Elevator implements Observer {
 
     private Doors doors;
     private Motor motor;
-    private GoingDownState goingDown;
-    private GoingUpState goingUp;
-    private IdleState idle;
+    private volatile GoingDownState goingDown;
+    private volatile GoingUpState goingUp;
+    private volatile IdleState idle;
     private ElevatorState currentState;
     //These should only be public for testing
     public final int BOTTOM_FLOOR = 1;

@@ -37,14 +37,16 @@ public class ElevatorTest {
         int startFloor = elevator.getCurrentFloor();
         elevator.goUp();
 
-        Thread.sleep(Motor.MAX_RUN_TIME_MS + 100);
+        while(elevator.getMotor().isOn()  || !elevator.getDoors().areOpen()){
+        }
         int secondFloor = elevator.getCurrentFloor();
 
         assertTrue(secondFloor > startFloor);
 
         elevator.goUp();
 
-        Thread.sleep(Motor.MAX_RUN_TIME_MS + 100);
+        while(elevator.getMotor().isOn()  || !elevator.getDoors().areOpen()){
+        }
         int thirdFloor = elevator.getCurrentFloor();
 
         assertTrue(thirdFloor > secondFloor);
@@ -62,13 +64,15 @@ public class ElevatorTest {
         assertTrue(startFloor == 3);
 
         elevator.goDown();
-        Thread.sleep(Motor.MAX_RUN_TIME_MS + 100);
+        while(elevator.getMotor().isOn()  || !elevator.getDoors().areOpen()){
+        }
 
         int secondFloor = elevator.getCurrentFloor();
         assertTrue(secondFloor < startFloor);
 
         elevator.goDown();
-        Thread.sleep(Motor.MAX_RUN_TIME_MS + 100);
+        while(elevator.getMotor().isOn()  || !elevator.getDoors().areOpen()){
+        }
 
         int thirdFloor = elevator.getCurrentFloor();
         assertTrue(thirdFloor < secondFloor);
@@ -82,7 +86,8 @@ public class ElevatorTest {
 
         int startFloor = elevator.getCurrentFloor();
         elevator.goDown();
-        Thread.sleep(Motor.MAX_RUN_TIME_MS + 100);
+        while(elevator.getMotor().isOn()  || !elevator.getDoors().areOpen()){
+        }
 
         int endFloor = elevator.getCurrentFloor();
 
@@ -100,7 +105,8 @@ public class ElevatorTest {
         assertTrue(startFloor == elevator.TOP_FLOOR);
 
         elevator.goUp();
-        Thread.sleep(Motor.MAX_RUN_TIME_MS + 100);
+        while(elevator.getMotor().isOn()  || !elevator.getDoors().areOpen()){
+        }
 
         int endFloor = elevator.getCurrentFloor();
         assertTrue(startFloor == endFloor);

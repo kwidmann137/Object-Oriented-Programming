@@ -36,7 +36,6 @@ public class DoorsTest {
         assertTrue(doors.areOpen());
 
         while(doors.areOpen()){
-            Thread.sleep(500);
         }
 
         //if test makes it here before 5.1 seconds then test passes

@@ -9,8 +9,8 @@ import java.util.Observer;
 public class Doors implements Observer {
 
     private DoorState currentState;
-    private ClosedState closed;
-    private OpenState open;
+    private volatile ClosedState closed;
+    private volatile OpenState open;
     static final int TIME_TO_CLOSE_MS = 5000;
 
     public Doors(MyTimer timer)

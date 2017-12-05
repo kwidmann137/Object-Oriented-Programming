@@ -8,8 +8,8 @@ import java.util.Observer;
 
 public class Motor extends Observable implements Observer{
 
-    private OnState on;
-    private OffState off;
+    private volatile OnState on;
+    private volatile OffState off;
     private MotorState currentState;
     public static final int MAX_RUN_TIME_MS = 10000;
     private int timeToRun;
