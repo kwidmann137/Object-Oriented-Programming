@@ -14,18 +14,22 @@ public class IdleState implements ElevatorState {
     public void up() {
         elevator.getDoors().close();
         int floorsLeft = elevator.TOP_FLOOR - elevator.getCurrentFloor();
-        int motorTimeout = getMotorTimeout(floorsLeft);
-        elevator.getMotor().turnOn(motorTimeout);
-        elevator.setGoingUpState();
+        if(floorsLeft > 0){
+            int motorTimeout = getMotorTimeout(floorsLeft);
+            elevator.getMotor().turnOn(motorTimeout);
+            elevator.setGoingUpState();
+        }
     }
 
     @Override
     public void down() {
         elevator.getDoors().close();
         int floorsLeft = elevator.getCurrentFloor() - elevator.BOTTOM_FLOOR;
-        int motorTimeout = getMotorTimeout(floorsLeft);
-        elevator.getMotor().turnOn(motorTimeout);
-        elevator.setGoingDownState();
+        if(floorsLeft > 0){
+            int motorTimeout = getMotorTimeout(floorsLeft);
+            elevator.getMotor().turnOn(motorTimeout);
+            elevator.setGoingDownState();
+        }
     }
 
     private int getMotorTimeout(int floorsLeft){
@@ -52,7 +56,6 @@ public class IdleState implements ElevatorState {
 
     @Override
     public void handleMotorStateChange(Motor motor) {
-
     }
 
     @Override

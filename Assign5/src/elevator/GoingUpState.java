@@ -6,7 +6,6 @@ import states.ElevatorState;
 public class GoingUpState implements ElevatorState {
 
     private Elevator elevator;
-    private boolean motorRunning = false;
 
     GoingUpState(Elevator elevator){
         this.elevator = elevator;
@@ -33,9 +32,7 @@ public class GoingUpState implements ElevatorState {
 
     @Override
     public void handleMotorStateChange(Motor motor) {
-        this.motorRunning = motor.isOn();
-
-        if(!motorRunning){
+        if(!motor.isOn()){
             elevator.setIdleState();
             updateElevatorFloor();
             elevator.openDoors();
