@@ -11,8 +11,7 @@ public class OnState implements MotorState{
     OnState(Motor motor){
         this.motor = motor;
         msRun = 0;
-    }g
-
+    }
 
     @Override
     public void on() {
