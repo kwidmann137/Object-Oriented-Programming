@@ -28,6 +28,7 @@ public class OnState implements MotorState{
     public void updateTime() {
         msRun += MyTimer.MS_PER_TICK;
         if(msRun >= motor.getRunTime()){
+            msRun = 0;
             motor.setOff();
         }
     }
