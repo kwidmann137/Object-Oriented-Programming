@@ -18,6 +18,8 @@ public class IdleState implements ElevatorState {
             int motorTimeout = getMotorTimeout(floorsLeft);
             elevator.getMotor().turnOn(motorTimeout);
             elevator.setGoingUpState();
+        }else{
+            elevator.getDoors().open();
         }
     }
 
@@ -29,6 +31,8 @@ public class IdleState implements ElevatorState {
             int motorTimeout = getMotorTimeout(floorsLeft);
             elevator.getMotor().turnOn(motorTimeout);
             elevator.setGoingDownState();
+        }else{
+            elevator.getDoors().open();
         }
     }
 

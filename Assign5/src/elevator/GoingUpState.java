@@ -44,10 +44,6 @@ public class GoingUpState implements ElevatorState {
         int floorsTraveled = Math.round(elevator.getMotor().getRunTime()/elevator.MS_PER_FLOOR);
         int currentFloor = elevator.getCurrentFloor() + floorsTraveled;
 
-        if(currentFloor > elevator.TOP_FLOOR){
-            currentFloor = elevator.TOP_FLOOR;
-        }
-
         elevator.setCurrentFloor(currentFloor);
 
     }

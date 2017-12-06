@@ -33,9 +33,7 @@ public class GoingDownState implements ElevatorState {
     }
     @Override
     public void handleMotorStateChange(Motor motor) {
-        this.motorRunning = motor.isOn();
-
-        if(!motorRunning){
+        if(!motor.isOn()){
             elevator.setIdleState();
             updateElevatorFloor();
             elevator.openDoors();
@@ -46,10 +44,6 @@ public class GoingDownState implements ElevatorState {
 
         int floorsTraveled = Math.round(elevator.getMotor().getRunTime()/elevator.MS_PER_FLOOR);
         int currentFloor = elevator.getCurrentFloor() - floorsTraveled;
-
-        if(currentFloor < elevator.BOTTOM_FLOOR){
-            currentFloor = elevator.BOTTOM_FLOOR;
-        }
 
         elevator.setCurrentFloor(currentFloor);
 

@@ -86,7 +86,7 @@ public class ElevatorTest {
 
         int startFloor = elevator.getCurrentFloor();
         elevator.goDown();
-        while(elevator.getMotor().isOn()  || !elevator.getDoors().areOpen()){
+        while(elevator.getMotor().isOn()){
         }
 
         int endFloor = elevator.getCurrentFloor();
@@ -105,7 +105,7 @@ public class ElevatorTest {
         assertTrue(startFloor == elevator.TOP_FLOOR);
 
         elevator.goUp();
-        while(elevator.getMotor().isOn()  || !elevator.getDoors().areOpen()){
+        while(elevator.getMotor().isOn()){
         }
 
         int endFloor = elevator.getCurrentFloor();
@@ -130,6 +130,8 @@ public class ElevatorTest {
         Motor motor = new Motor(timer);
         Doors doors = new Doors(timer);
         Elevator elevator = new Elevator(motor, doors);
+
+        elevator.setCurrentFloor(elevator.BOTTOM_FLOOR + 1);
 
         elevator.openDoors();
         assertTrue(elevator.getDoors().areOpen());
